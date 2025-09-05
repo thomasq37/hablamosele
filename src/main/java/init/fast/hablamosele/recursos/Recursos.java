@@ -21,7 +21,7 @@ public class Recursos {
             name = "recursos_infografias",
             joinColumns = @JoinColumn(name = "recursos_id")
     )
-    @Column(name = "infografia", columnDefinition = "LONGTEXT")
+    @Column(name = "infografia")
     private List<String> infografias;
 
     @ManyToMany
