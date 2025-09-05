@@ -17,12 +17,12 @@ public class TentativeBlocageService {
 
     @Transactional
     public boolean peutTenterConnexion(String ip) {
-        return peutTenter(ip, "CONNEXION", 5, 2); // 5 tentatives, bloqué pour 2 heures
+        return peutTenter(ip, "CONNEXION", 500, 2); // 5 tentatives, bloqué pour 2 heures
     }
 
     @Transactional
     public boolean peutTenterInscription(String ip) {
-        return peutTenter(ip, "INSCRIPTION", 3, 1); // 3 tentatives, bloqué pour 1 heure
+        return peutTenter(ip, "INSCRIPTION", 300, 1); // 3 tentatives, bloqué pour 1 heure
     }
 
     private boolean peutTenter(String ip, String type, int maxTentatives, long blocageHeures) {
