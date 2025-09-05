@@ -12,7 +12,6 @@ public class Recursos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "LONGTEXT")
     private String banner;
     private String titulo;
     private String description;
