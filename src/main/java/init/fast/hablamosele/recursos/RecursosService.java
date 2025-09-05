@@ -29,6 +29,8 @@ public class RecursosService {
         existant.setDescription(maj.getDescription());
         existant.setTags(maj.getTags());
         existant.setInfografias(maj.getInfografias());
+        existant.setCategorias(maj.getCategorias());
+        existant.setNiveles(maj.getNiveles());
 
         return recursosRepository.save(existant);
     }
