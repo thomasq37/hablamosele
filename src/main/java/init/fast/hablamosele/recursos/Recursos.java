@@ -12,6 +12,7 @@ public class Recursos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
     private String banner;
     private String titulo;
     private String description;
@@ -21,7 +22,7 @@ public class Recursos {
             name = "recursos_infografias",
             joinColumns = @JoinColumn(name = "recursos_id")
     )
-    @Column(name = "infografia")
+    @Column(name = "infografia", columnDefinition = "TEXT")
     private List<String> infografias;
 
     @ManyToMany
