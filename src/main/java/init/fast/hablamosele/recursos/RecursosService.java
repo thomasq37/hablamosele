@@ -53,4 +53,25 @@ public class RecursosService {
         return recursosRepository.findById(id)
                 .orElseThrow(() -> new RecursosNotFoundException(id));
     }
+    /** Statistiques */
+    @Transactional(readOnly = true)
+    public List<RecursosStatistiquesDTO> listerStatsRecursos() {
+        List<Recursos> all = recursosRepository.findAll();
+        return RecursosMapper.toStatDTOList(all);
+    }
+
+    /** +1 vue (public) – incrément atomique via requête UPDATE */
+    @Transactional
+    public RecursosStatistiquesDTO incrementerNbVisualisations(Long id) {
+        int updated = recursosRepository.incrementViews(id);
+        if (updated == 0) throw new RecursosNotFoundException(id);
+
+        Recursos r = recursosRepository.findById(id)
+                .orElseThrow(() -> new RecursosNotFoundException(id));
+
+        // sécurité anti-null
+        if (r.getNbVisualisaciones() == null) r.setNbVisualisaciones(0);
+
+        return RecursosMapper.toStatDTO(r);
+    }
 }

@@ -34,8 +34,7 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
     private final CustomUtilisateurDetailsService customUtilisateurDetailsService;
     @Value("${app.cors.origin}")
-    private String allowedOrigins;
-
+    private String[] allowedOrigins;
     
     public SecurityConfig(AuthEntryPointJwt unauthorizedHandler, JwtUtils jwtUtils, CustomUtilisateurDetailsService customUtilisateurDetailsService) {
     	this.unauthorizedHandler = unauthorizedHandler;
@@ -54,7 +53,7 @@ public class SecurityConfig {
             .exceptionHandling(customize -> customize.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> {
-                authorize.requestMatchers("/api/auth/**", "/api/recursos", "/api/categorias", "/api/niveles").permitAll();
+                authorize.requestMatchers("/api/auth/**", "/api/recursos","/api/recursos/{id}/ajouter-visualisation", "/api/categorias", "/api/niveles").permitAll();
                 authorize.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAuthority("ROLE_ADMIN");
                 authorize.anyRequest().authenticated();
             });

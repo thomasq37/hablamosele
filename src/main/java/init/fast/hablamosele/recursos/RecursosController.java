@@ -43,4 +43,16 @@ public class RecursosController {
     public Recursos obtenirParIdRecursos(@PathVariable Long id) {
         return recursosService.obtenirParIdRecursos(id);
     }
+
+    /** --- STATS (ADMIN SEULEMENT) --- */
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<RecursosStatistiquesDTO> listerStatsRecursos() {
+        return recursosService.listerStatsRecursos();
+    }
+
+    @PostMapping("/{id}/ajouter-visualisation")
+    public RecursosStatistiquesDTO incrementerVue(@PathVariable Long id) {
+        return recursosService.incrementerNbVisualisations(id);
+    }
 }

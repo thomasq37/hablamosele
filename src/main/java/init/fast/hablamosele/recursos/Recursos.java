@@ -40,5 +40,6 @@ public class Recursos {
             inverseJoinColumns = @JoinColumn(name = "nivel_id")
     )
     private List<Nivel> niveles;
+    private Integer nbVisualisaciones;
 }
 
