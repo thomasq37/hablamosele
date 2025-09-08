@@ -2,6 +2,7 @@ package init.fast.hablamosele.recursos;
 
 import init.fast.hablamosele.categorias.Categoria;
 import init.fast.hablamosele.niveles.Nivel;
+import init.fast.hablamosele.statistiques.RecursosVisualisacion;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -40,6 +41,7 @@ public class Recursos {
             inverseJoinColumns = @JoinColumn(name = "nivel_id")
     )
     private List<Nivel> niveles;
-    private Integer nbVisualisaciones;
+    @OneToMany(mappedBy = "recursos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecursosVisualisacion> recursosVisualisaciones;
 }
 

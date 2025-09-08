@@ -1,17 +1,31 @@
 package init.fast.hablamosele.recursos;
 
 import init.fast.hablamosele.exception.RecursosNotFoundException;
+import init.fast.hablamosele.exception.ResourceNotFoundException;
+import init.fast.hablamosele.statistiques.RecursosVisualisacion;
+import init.fast.hablamosele.statistiques.RecursosVisualisacionDTO;
+import init.fast.hablamosele.statistiques.RecursosVisualisacionMapper;
+import init.fast.hablamosele.statistiques.RecursosVisualisacionRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class RecursosService {
 
     private final RecursosRepository recursosRepository;
+    private final RecursosVisualisacionRepository recursosVisualisacionRepository;
 
-    public RecursosService(RecursosRepository recursosRepository) {
+    public RecursosService(
+            RecursosRepository recursosRepository,
+            RecursosVisualisacionRepository recursosVisualisacionRepository) {
         this.recursosRepository = recursosRepository;
+        this.recursosVisualisacionRepository = recursosVisualisacionRepository;
     }
 
     @Transactional
@@ -44,8 +58,9 @@ public class RecursosService {
     }
 
     @Transactional(readOnly = true)
-    public List<Recursos> listerRecursos() {
-        return recursosRepository.findAll();
+    public List<RecursosDTO> listerRecursos() {
+        List<Recursos> all = recursosRepository.findAll();
+        return RecursosMapper.toDTOList(all);
     }
 
     @Transactional(readOnly = true)
@@ -53,25 +68,40 @@ public class RecursosService {
         return recursosRepository.findById(id)
                 .orElseThrow(() -> new RecursosNotFoundException(id));
     }
-    /** Statistiques */
+
     @Transactional(readOnly = true)
-    public List<RecursosStatistiquesDTO> listerStatsRecursos() {
-        List<Recursos> all = recursosRepository.findAll();
-        return RecursosMapper.toStatDTOList(all);
+    public List<String> obtenirInfografiasIdRecursos(Long id) {
+        // Vérifier si la ressource existe
+        if (!recursosRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Recursos not found with id: " + id);
+        }
+
+        // Récupérer les infographies (méthode optimisée)
+        List<String> infografias = recursosRepository.findInfografiasByRecursosId(id);
+        return infografias != null ? infografias : Collections.emptyList();
     }
 
-    /** +1 vue (public) – incrément atomique via requête UPDATE */
     @Transactional
-    public RecursosStatistiquesDTO incrementerNbVisualisations(Long id) {
-        int updated = recursosRepository.incrementViews(id);
-        if (updated == 0) throw new RecursosNotFoundException(id);
+    public void ajouterVisualisacion(Long recursosId, String ipAddress) {
+        // Vérifier que la ressource existe
+        Recursos recursos = recursosRepository.findById(recursosId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recursos not found with id: " + recursosId));
 
-        Recursos r = recursosRepository.findById(id)
-                .orElseThrow(() -> new RecursosNotFoundException(id));
+        // Créer une nouvelle visualisation
+        RecursosVisualisacion visualisation = new RecursosVisualisacion();
+        visualisation.setRecursos(recursos);
+        visualisation.setDateVisualisacion(LocalDateTime.now());
+        visualisation.setIp(ipAddress);
 
-        // sécurité anti-null
-        if (r.getNbVisualisaciones() == null) r.setNbVisualisaciones(0);
+        // Sauvegarder la visualisation
+        recursosVisualisacionRepository.save(visualisation);
+    }
 
-        return RecursosMapper.toStatDTO(r);
+    @Transactional(readOnly = true)
+    public List<RecursosVisualisacionDTO> obtenirToutesVisualisations() {
+        List<RecursosVisualisacion> visualisations = recursosVisualisacionRepository
+                .findAll();
+
+        return RecursosVisualisacionMapper.toDTOList(visualisations);
     }
 }
