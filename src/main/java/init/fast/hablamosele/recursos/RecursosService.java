@@ -64,6 +64,13 @@ public class RecursosService {
     }
 
     @Transactional(readOnly = true)
+    public List<RecursosDTO> listerDernieresInfographies() {
+        List<Recursos> derniers = recursosRepository.findTop3ByOrderByIdDesc();
+        return RecursosMapper.toDTOList(derniers);
+    }
+
+
+    @Transactional(readOnly = true)
     public Recursos obtenirParIdRecursos(Long id) {
         return recursosRepository.findById(id)
                 .orElseThrow(() -> new RecursosNotFoundException(id));

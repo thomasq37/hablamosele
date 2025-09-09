@@ -66,6 +66,15 @@ public class RecursosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GetMapping("/ultimas")
+    public ResponseEntity<List<RecursosDTO>> listerDernieresInfographies() {
+        try {
+            List<RecursosDTO> recursos = recursosService.listerDernieresInfographies();
+            return ResponseEntity.ok(recursos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

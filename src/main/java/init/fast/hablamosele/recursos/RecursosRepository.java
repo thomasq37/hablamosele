@@ -12,5 +12,5 @@ public interface RecursosRepository extends JpaRepository<Recursos, Long> {
     @Query(value = "SELECT ri.infografia FROM recursos_infografias ri WHERE ri.recursos_id = :id",
             nativeQuery = true)
     List<String> findInfografiasByRecursosId(@Param("id") Long id);
-
+    List<Recursos> findTop3ByOrderByIdDesc();
 }
