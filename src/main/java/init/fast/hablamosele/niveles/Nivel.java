@@ -11,5 +11,6 @@ public class Nivel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+    private String color;
 }
 

@@ -21,10 +21,8 @@ public final class RecursosMapper {
         dto.setTags(r.getTags());
         dto.setCategorias(r.getCategorias());
         dto.setNiveles(r.getNiveles());
-        dto.setNbInfografias(Optional.ofNullable(r.getInfografias())
-                .map(List::size)
-                .orElse(0));
-
+        dto.setNbInfografias(r.getNbInfografias());
+        dto.setNbCahiersActivite(r.getNbCahiersActivite());
         return dto;
     }
 

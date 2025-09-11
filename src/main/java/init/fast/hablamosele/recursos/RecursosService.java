@@ -45,6 +45,8 @@ public class RecursosService {
         existant.setInfografias(maj.getInfografias());
         existant.setCategorias(maj.getCategorias());
         existant.setNiveles(maj.getNiveles());
+        existant.setNbInfografias(maj.getNbInfografias());
+        existant.setNbCahiersActivite(maj.getNbCahiersActivite());
 
         return recursosRepository.save(existant);
     }

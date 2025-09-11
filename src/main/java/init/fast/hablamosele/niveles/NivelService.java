@@ -26,6 +26,7 @@ public class NivelService {
                 .orElseThrow(() -> new NivelNotFoundException(id));
 
         existant.setNombre(maj.getNombre());
+        existant.setColor(maj.getColor());
 
         return nivelRepository.save(existant);
     }

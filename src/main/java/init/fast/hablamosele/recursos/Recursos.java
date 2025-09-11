@@ -43,5 +43,8 @@ public class Recursos {
     private List<Nivel> niveles;
     @OneToMany(mappedBy = "recursos", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecursosVisualisacion> recursosVisualisaciones;
+    private Integer nbInfografias;
+    private Integer nbCahiersActivite;
+
 }
 
