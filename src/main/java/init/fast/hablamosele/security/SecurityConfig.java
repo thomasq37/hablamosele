@@ -53,7 +53,7 @@ public class SecurityConfig {
             .exceptionHandling(customize -> customize.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> {
-                authorize.requestMatchers("/api/auth/**", "/api/recursos","/api/recursos/{id}/infografias", "/api/recursos/{id}/ajouter-visualisation", "/api/recursos/ultimas", "/api/categorias", "/api/niveles").permitAll();
+                authorize.requestMatchers("/api/auth/**", "/api/recursos","/api/recursos/{id}/infografias", "/api/newsletter-subscriber/ajouter","/api/recursos/{id}/ajouter-visualisation", "/api/recursos/ultimas", "/api/categorias", "/api/niveles").permitAll();
                 authorize.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasAuthority("ROLE_ADMIN");
                 authorize.anyRequest().authenticated();
             });
